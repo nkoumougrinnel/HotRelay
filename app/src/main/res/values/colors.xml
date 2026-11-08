@@ -2,4 +2,34 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- HotRelay Black, White & Green Theme Colors -->
+    <color name="primary">#111827</color>
+    <color name="primary_dark">#000000</color>
+    <color name="primary_light">#F3F4F6</color>
+
+    <!-- Green Accent Colors -->
+    <color name="accent_green">#10B981</color>
+    <color name="accent_green_dark">#059669</color>
+    <color name="accent_green_light">#D1FAE5</color>
+
+    <!-- Background & Surface -->
+    <color name="background">#FFFFFF</color>
+    <color name="surface">#FFFFFF</color>
+
+    <!-- Text Colors -->
+    <color name="text_primary">#111827</color>
+    <color name="text_secondary">#4B5563</color>
+    <color name="text_muted">#9CA3AF</color>
+
+    <!-- Status & Indicator Colors -->
+    <color name="status_green">#10B981</color>
+    <color name="status_green_bg">#D1FAE5</color>
+    <color name="status_red">#EF4444</color>
+    <color name="status_red_bg">#FEE2E2</color>
+    <color name="status_orange">#F59E0B</color>
+
+    <!-- Borders & Dividers -->
+    <color name="card_stroke">#E5E7EB</color>
+    <color name="divider">#F3F4F6</color>
 </resources>

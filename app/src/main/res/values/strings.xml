@@ -1,3 +1,40 @@
 <resources>
     <string name="app_name">HotRelay</string>
+    <string name="app_subtitle">Partage local, sans Internet</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">Accueil</string>
+    <string name="nav_transfers">Transferts</string>
+    <string name="nav_devices">Appareils</string>
+    <string name="nav_settings">Paramètres</string>
+
+    <!-- Home Screen -->
+    <string name="create_session">Créer une session</string>
+    <string name="create_session_desc">Votre téléphone devient relais</string>
+    <string name="join_session">Rejoindre une session</string>
+    <string name="local_network_only">Réseau local uniquement</string>
+
+    <!-- Host Session Screen -->
+    <string name="host_session_title">Session hôte</string>
+    <string name="host_active">Hôte actif</string>
+
+    <!-- Transfers Screen -->
+    <string name="transfers_title">Transferts</string>
+    <string name="recent_history">Historique récent</string>
+    <string name="transfer_success">Transfert réussi</string>
+    <string name="transfer_failed">Échec • Réessayez</string>
+    <string name="transfer_received">Reçu • Terminé</string>
+
+    <!-- Send File Screen -->
+    <string name="send_file_title">Envoyer un fichier</string>
+    <string name="recipient">Destinataire</string>
+    <string name="file">Fichier</string>
+    <string name="transfer_route">Trajet du transfert</string>
+    <string name="your_device">Votre appareil</string>
+    <string name="host_relay">Hôte / Relais</string>
+    <string name="send_via_host">Envoyer via l\'hôte</string>
+    <string name="transfer_relayed_by_host">Transfert relayé par l\'hôte</string>
+
+    <!-- Actions -->
+    <string name="stop_session">Arrêter la session</string>
 </resources>
