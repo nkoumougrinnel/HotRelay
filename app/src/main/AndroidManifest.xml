@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Sockets UDP (le réseau local du hotspot passe aussi par cette permission) -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Lire l'IP de la passerelle Wi-Fi (#13) -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <application
         android:allowBackup="true"
@@ -22,27 +29,17 @@
             </intent-filter>
         </activity>
 
-        <!-- Host Session Activity -->
+        <!-- TEMPORAIRE : écran de test réseau (#10, #13). À retirer avant la démo. -->
         <activity
-            android:name=".ui.host.HostSessionActivity"
-            android:exported="false"
-            android:label="@string/host_session_title"
-            android:parentActivityName=".MainActivity" />
+            android:name=".debug.NetworkTestActivity"
+            android:exported="true"
+            android:label="HotRelay Test réseau">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-        <!-- Join Host Activity -->
-        <activity
-            android:name=".ui.join.JoinHostActivity"
-            android:exported="false"
-            android:label="@string/join_host_title"
-            android:parentActivityName=".MainActivity" />
-
-        <!-- Send File Activity -->
-        <activity
-            android:name=".ui.send.SendFileActivity"
-            android:exported="false"
-            android:label="@string/send_file_title"
-            android:parentActivityName=".MainActivity" />
-
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
