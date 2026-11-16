@@ -26,6 +26,10 @@ android {
             }
         }
     }
+    testOptions {
+        // android.util.Log ne fait rien dans les tests JUnit (au lieu de lever une exception)
+        unitTests.isReturnDefaultValues = true
+    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
