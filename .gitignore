@@ -13,3 +13,8 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# Signature de l APK : ne jamais pousser le keystore (#31)
+*.jks
+*.keystore
+keystore.properties
