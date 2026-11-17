@@ -1,7 +1,6 @@
 package com.example.hotrelay;
 
 import android.os.Bundle;
-import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -24,17 +23,11 @@ public class MainActivity extends AppCompatActivity {
         WindowCompat.enableEdgeToEdge(getWindow());
         setContentView(R.layout.activity_main);
 
-        View layoutTopHeader = findViewById(R.id.layout_top_header);
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, 0, systemBars.right, 0);
-
-            if (layoutTopHeader != null) {
-                int topPadding = systemBars.top + (int) (6 * getResources().getDisplayMetrics().density);
-                layoutTopHeader.setPadding(0, topPadding, 0, 0);
-            }
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0);
 
             if (bottomNav != null) {
                 bottomNav.setPadding(0, 0, 0, systemBars.bottom);

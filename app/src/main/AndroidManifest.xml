@@ -1,18 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
-
-    <!-- Network & Local Hotspot Permissions -->
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <uses-permission
-        android:name="android.permission.NEARBY_WIFI_DEVICES"
-        android:usesPermissionFlags="neverForLocation"
-        tools:targetApi="s" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application
         android:allowBackup="true"
@@ -40,6 +27,13 @@
             android:name=".ui.host.HostSessionActivity"
             android:exported="false"
             android:label="@string/host_session_title"
+            android:parentActivityName=".MainActivity" />
+
+        <!-- Join Host Activity -->
+        <activity
+            android:name=".ui.join.JoinHostActivity"
+            android:exported="false"
+            android:label="@string/join_host_title"
             android:parentActivityName=".MainActivity" />
 
         <!-- Send File Activity -->

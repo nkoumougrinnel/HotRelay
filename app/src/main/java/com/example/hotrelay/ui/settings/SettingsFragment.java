@@ -20,7 +20,9 @@ public class SettingsFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_settings, container, false);
 
         EditText etDeviceName = root.findViewById(R.id.etDeviceName);
-        etDeviceName.setText(android.os.Build.MODEL);
+        if (etDeviceName != null) {
+            etDeviceName.setText("Mon Téléphone");
+        }
 
         return root;
     }

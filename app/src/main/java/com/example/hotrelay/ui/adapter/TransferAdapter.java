@@ -20,11 +20,20 @@ import java.util.List;
 
 public class TransferAdapter extends RecyclerView.Adapter<TransferAdapter.ViewHolder> {
 
+    public interface OnItemClickListener {
+        void onItemClick(TransferItem item);
+    }
+
     private List<TransferItem> transfers = new ArrayList<>();
+    private OnItemClickListener onItemClickListener;
 
     public void setTransfers(List<TransferItem> newTransfers) {
         this.transfers = newTransfers;
         notifyDataSetChanged();
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.onItemClickListener = listener;
     }
 
     @NonNull
@@ -66,6 +75,12 @@ public class TransferAdapter extends RecyclerView.Adapter<TransferAdapter.ViewHo
         } else {
             holder.ivFileIcon.setImageResource(R.drawable.ic_file_document);
         }
+
+        holder.itemView.setOnClickListener(v -> {
+            if (onItemClickListener != null) {
+                onItemClickListener.onItemClick(item);
+            }
+        });
     }
 
     @Override

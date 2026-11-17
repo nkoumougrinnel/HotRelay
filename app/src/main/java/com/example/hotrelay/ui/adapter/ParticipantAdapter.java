@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.hotrelay.R;
@@ -34,8 +35,15 @@ public class ParticipantAdapter extends RecyclerView.Adapter<ParticipantAdapter.
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Participant participant = participants.get(position);
         holder.tvName.setText(participant.getName());
-        holder.tvStatus.setText(participant.isConnected() ? "Connecté(e)" : "Déconnecté(e)");
-        holder.vStatusDot.setVisibility(participant.isConnected() ? View.VISIBLE : View.GONE);
+        holder.tvIp.setText(participant.getIpAddress());
+
+        if (position == 0) {
+            holder.tvStatus.setText("Envoie...");
+            holder.tvStatus.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.primary));
+        } else {
+            holder.tvStatus.setText("Connectée");
+            holder.tvStatus.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.status_green));
+        }
     }
 
     @Override
@@ -44,14 +52,13 @@ public class ParticipantAdapter extends RecyclerView.Adapter<ParticipantAdapter.
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvName, tvStatus;
-        View vStatusDot;
+        TextView tvName, tvIp, tvStatus;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvName = itemView.findViewById(R.id.tvParticipantName);
+            tvIp = itemView.findViewById(R.id.tvParticipantIp);
             tvStatus = itemView.findViewById(R.id.tvParticipantStatus);
-            vStatusDot = itemView.findViewById(R.id.vStatusDot);
         }
     }
 }

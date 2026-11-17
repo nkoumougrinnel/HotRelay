@@ -5,72 +5,47 @@
     android:viewportWidth="108"
     android:viewportHeight="108">
 
-    <!-- Outer Concentric Aura Ring -->
+    <!-- Orange Hotspot Arc Outer -->
     <path
-        android:pathData="M54,54 m-22,0 a22,22 0 1,1 44,0 a22,22 0 1,1 -44,0"
-        android:strokeColor="#10B981"
-        android:strokeWidth="1.5"
-        android:strokeAlpha="0.3" />
+        android:pathData="M32,52 A26,26 0 0,1 76,52"
+        android:strokeColor="#FF7A2F"
+        android:strokeWidth="5"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000" />
 
-    <!-- Connecting Rays / Lines -->
-    <!-- Top Ray -->
+    <!-- Orange Hotspot Arc Inner -->
     <path
-        android:pathData="M54,54 L54,28"
-        android:strokeColor="#10B981"
-        android:strokeWidth="2.5"
+        android:pathData="M42,58 A14,14 0 0,1 66,58"
+        android:strokeColor="#FF7A2F"
+        android:strokeWidth="5"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000" />
+
+    <!-- Center Orange Dot -->
+    <path
+        android:pathData="M54,62 m-5,0 a5,5 0 1,1 10,0 a5,5 0 1,1 -10,0"
+        android:fillColor="#FF7A2F" />
+
+    <!-- Connecting Rays to Bottom Nodes -->
+    <path
+        android:pathData="M54,62 L36,84"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="3"
         android:strokeLineCap="round" />
-    <!-- Bottom Left Ray -->
     <path
-        android:pathData="M54,54 L30,68"
-        android:strokeColor="#10B981"
-        android:strokeWidth="2.5"
-        android:strokeLineCap="round" />
-    <!-- Bottom Right Ray -->
-    <path
-        android:pathData="M54,54 L78,68"
-        android:strokeColor="#10B981"
-        android:strokeWidth="2.5"
+        android:pathData="M54,62 L72,84"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="3"
         android:strokeLineCap="round" />
 
-    <!-- Central Relay Node (Solid Emerald Green Dot) -->
+    <!-- Left White Node Dot -->
     <path
-        android:pathData="M54,54 m-9,0 a9,9 0 1,1 18,0 a9,9 0 1,1 -18,0"
-        android:fillColor="#10B981" />
-    <path
-        android:pathData="M54,54 m-4,0 a4,4 0 1,1 8,0 a4,4 0 1,1 -8,0"
+        android:pathData="M36,84 m-5,0 a5,5 0 1,1 10,0 a5,5 0 1,1 -10,0"
         android:fillColor="#FFFFFF" />
 
-    <!-- Top Node (Phone Icon) -->
+    <!-- Right White Node Dot -->
     <path
-        android:pathData="M49,20 h10 a2,2 0 0,1 2,2 v14 a2,2 0 0,1 -2,2 h-10 a2,2 0 0,1 -2,-2 v-14 a2,2 0 0,1 2,-2 z"
-        android:fillColor="#FFFFFF"
-        android:strokeColor="#111827"
-        android:strokeWidth="2" />
-    <path
-        android:pathData="M51,24 h6 v9 h-6 z"
-        android:fillColor="#10B981" />
-
-    <!-- Bottom Left Node (Laptop Icon) -->
-    <path
-        android:pathData="M24,62 h12 a1.5,1.5 0 0,1 1.5,1.5 v8 a0,0 0 0,1 0,0 h-15 a0,0 0 0,1 0,0 v-8 a1.5,1.5 0 0,1 1.5,-1.5 z"
-        android:fillColor="#FFFFFF"
-        android:strokeColor="#111827"
-        android:strokeWidth="2" />
-    <path
-        android:pathData="M21,72 h18 v2 a1,1 0 0,1 -1,1 h-16 a1,1 0 0,1 -1,-1 z"
-        android:fillColor="#111827" />
-    <path
-        android:pathData="M26,65 h8 v4 h-8 z"
-        android:fillColor="#10B981" />
-
-    <!-- Bottom Right Node (Mobile Device Icon) -->
-    <path
-        android:pathData="M73,60 h10 a2,2 0 0,1 2,2 v14 a2,2 0 0,1 -2,2 h-10 a2,2 0 0,1 -2,-2 v-14 a2,2 0 0,1 2,-2 z"
-        android:fillColor="#FFFFFF"
-        android:strokeColor="#111827"
-        android:strokeWidth="2" />
-    <path
-        android:pathData="M75,64 h6 v9 h-6 z"
-        android:fillColor="#10B981" />
+        android:pathData="M72,84 m-5,0 a5,5 0 1,1 10,0 a5,5 0 1,1 -10,0"
+        android:fillColor="#FFFFFF" />
 
 </vector>
