@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="120"
+    android:viewportHeight="120">
+
+    <!-- Dark Slate Squircle Background -->
+    <path
+        android:pathData="M24,0 h72 a24,24 0 0,1 24,24 v72 a24,24 0 0,1 -24,24 h-72 a24,24 0 0,1 -24,-24 v-72 a24,24 0 0,1 24,-24 z"
+        android:fillColor="#0F1A28" />
+
+    <!-- Orange Hotspot Arc Outer -->
+    <path
+        android:pathData="M38,58 A26,26 0 0,1 82,58"
+        android:strokeColor="#FF7A2F"
+        android:strokeWidth="5"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000" />
+
+    <!-- Orange Hotspot Arc Inner -->
+    <path
+        android:pathData="M48,64 A14,14 0 0,1 72,64"
+        android:strokeColor="#FF7A2F"
+        android:strokeWidth="5"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000" />
+
+    <!-- Center Orange Dot -->
+    <path
+        android:pathData="M60,68 m-5,0 a5,5 0 1,1 10,0 a5,5 0 1,1 -10,0"
+        android:fillColor="#FF7A2F" />
+
+    <!-- Connecting Rays to Bottom Nodes -->
+    <path
+        android:pathData="M60,68 L42,90"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="3"
+        android:strokeLineCap="round" />
+    <path
+        android:pathData="M60,68 L78,90"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="3"
+        android:strokeLineCap="round" />
+
+    <!-- Left White Node Dot -->
+    <path
+        android:pathData="M42,90 m-5,0 a5,5 0 1,1 10,0 a5,5 0 1,1 -10,0"
+        android:fillColor="#FFFFFF" />
+
+    <!-- Right White Node Dot -->
+    <path
+        android:pathData="M78,90 m-5,0 a5,5 0 1,1 10,0 a5,5 0 1,1 -10,0"
+        android:fillColor="#FFFFFF" />
+
+</vector>

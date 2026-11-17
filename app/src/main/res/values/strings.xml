@@ -1,3 +1,45 @@
 <resources>
     <string name="app_name">HotRelay</string>
+    <string name="app_subtitle">Partagez des fichiers entre téléphones, sans Internet, grâce au hotspot d\'un téléphone hôte.</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">Accueil</string>
+    <string name="nav_transfers">Transferts</string>
+    <string name="nav_devices">Appareils</string>
+    <string name="nav_settings">Paramètres</string>
+
+    <!-- Home Screen (Screen 1) -->
+    <string name="before_you_start">AVANT DE COMMENCER</string>
+    <string name="step_1">❶ Un téléphone active son point d\'accès dans les réglages Android.</string>
+    <string name="step_2">❷ Les autres se connectent à ce hotspot en Wi-Fi.</string>
+    <string name="become_host">Devenir l\'hôte relais</string>
+    <string name="become_host_desc">Mon hotspot est activé</string>
+    <string name="join_host">Rejoindre un hôte</string>
+    <string name="join_host_desc">Je suis connecté à son hotspot</string>
+    <string name="footer_local_notice">Réseau local uniquement • aucun cloud • aucune donnée mobile</string>
+
+    <!-- Host Session Screen (Screen 2a) -->
+    <string name="host_session_title">Hôte relais</string>
+    <string name="host_relay_title">Hôte relais</string>
+    <string name="relay_active">Relais actif</string>
+    <string name="guest_address_label">Adresse à donner aux invités :</string>
+    <string name="host_keep_open_notice">Laissez cet écran ouvert : tous les fichiers passent par ce téléphone.</string>
+    <string name="stop_relay">Arrêter le relais</string>
+
+    <!-- Join Screen (Screen 2b) -->
+    <string name="join_host_title">Rejoindre un hôte</string>
+    <string name="join_host_instruction">Saisissez l\'adresse affichée sur l\'écran de l\'hôte.</string>
+    <string name="host_ip_label">Adresse IP de l\'hôte</string>
+    <string name="port_label">Port</string>
+    <string name="your_name_label">Votre nom</string>
+    <string name="connect">Se connecter</string>
+
+    <!-- Send Screen (Screen 3) -->
+    <string name="send_file_title">Envoyer</string>
+    <string name="send_title">Envoyer</string>
+    <string name="send_via_relay">Envoyer via le relais</string>
+
+    <!-- Progress Screen (Screen 4) -->
+    <string name="sending_in_progress">Envoi en cours</string>
+    <string name="cancel_send">Annuler l\'envoi</string>
 </resources>
