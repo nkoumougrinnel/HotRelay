@@ -41,6 +41,48 @@
             android:text="Client : PING" />
     </LinearLayout>
 
+    <EditText
+        android:id="@+id/net_test_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Mon nom"
+        android:importantForAutofill="no"
+        android:inputType="textPersonName" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/net_test_btn_session_host"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Ouvrir session" />
+
+        <Button
+            android:id="@+id/net_test_btn_session_join"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Rejoindre" />
+
+        <Button
+            android:id="@+id/net_test_btn_session_stop"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Quitter" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/net_test_participants"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="8dp"
+        android:textStyle="bold" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
