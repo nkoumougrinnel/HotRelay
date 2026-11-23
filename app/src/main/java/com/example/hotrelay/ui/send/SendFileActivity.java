@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -18,6 +19,7 @@ import com.example.hotrelay.R;
 import com.example.hotrelay.files.FileInfo;
 import com.example.hotrelay.model.Participant;
 import com.example.hotrelay.session.SessionManager;
+import com.example.hotrelay.transfer.Transfer;
 
 import java.io.IOException;
 import java.util.List;
@@ -26,7 +28,8 @@ import java.util.List;
  * Écran Envoyer : choix du destinataire parmi les participants (#23) et du fichier (#7).
  *
  * <p>Le fichier est choisi avec le Storage Access Framework ({@code ACTION_OPEN_DOCUMENT}) :
- * aucune permission de stockage n'est nécessaire. L'envoi bloc par bloc arrive avec #22.</p>
+ * aucune permission de stockage n'est nécessaire. L'envoi suit le protocole §9 (#22) et
+ * sa progression s'affiche en direct.</p>
  */
 public class SendFileActivity extends AppCompatActivity implements SessionManager.Listener {
 
@@ -36,14 +39,19 @@ public class SendFileActivity extends AppCompatActivity implements SessionManage
     private static final String TAG = "SendFile";
     private static final String STATE_URI = "file_uri";
     private static final String STATE_RECIPIENT = "recipient_id";
+    private static final String STATE_TRANSFER = "transfer_id";
 
     private SessionManager session;
     private RadioGroup rgRecipients;
     private TextView tvNoRecipient, tvSendVia, tvSendStatus, tvFileName, tvFileMeta, tvFileAction, tvSendHint;
-    private View btnSend, badgeStatus;
+    private View btnSend, badgeStatus, cardProgress, btnCancelTransfer;
+    private TextView tvProgressTitle, tvProgressPercent, tvProgressState;
+    private ProgressBar pbSend;
 
     private FileInfo file;
     private String recipientId;
+    /** Envoi lancé depuis cet écran, -1 si aucun. */
+    private int transferId = -1;
 
     /** Ouvre le sélecteur de fichiers d'Android (tous les types). */
     private final ActivityResultLauncher<String[]> pickFile =
@@ -65,6 +73,13 @@ public class SendFileActivity extends AppCompatActivity implements SessionManage
         tvFileAction = findViewById(R.id.tvFileAction);
         tvSendHint = findViewById(R.id.tvSendHint);
         btnSend = findViewById(R.id.btnSendViaHost);
+        cardProgress = findViewById(R.id.cardProgress);
+        tvProgressTitle = findViewById(R.id.tvProgressTitle);
+        tvProgressPercent = findViewById(R.id.tvProgressPercent);
+        tvProgressState = findViewById(R.id.tvProgressState);
+        pbSend = findViewById(R.id.pbSend);
+        btnCancelTransfer = findViewById(R.id.btnCancelTransfer);
+        btnCancelTransfer.setOnClickListener(v -> session.cancelTransfer(transferId));
 
         findViewById(R.id.btnBackSend).setOnClickListener(v -> finish());
         findViewById(R.id.cardFile).setOnClickListener(v -> pickFile.launch(new String[]{"*/*"}));
@@ -77,6 +92,7 @@ public class SendFileActivity extends AppCompatActivity implements SessionManage
 
         if (savedInstanceState != null) {
             recipientId = savedInstanceState.getString(STATE_RECIPIENT);
+            transferId = savedInstanceState.getInt(STATE_TRANSFER, -1);
             Uri uri = savedInstanceState.getParcelable(STATE_URI);
             if (uri != null) loadFile(uri);
         } else {
@@ -90,6 +106,8 @@ public class SendFileActivity extends AppCompatActivity implements SessionManage
     protected void onStart() {
         super.onStart();
         session.addListener(this);
+        Transfer t = transferId == -1 ? null : session.getTransfer(transferId);
+        if (t != null) onTransferChanged(t); // revenu sur l'écran : état à jour
     }
 
     @Override
@@ -102,6 +120,7 @@ public class SendFileActivity extends AppCompatActivity implements SessionManage
     protected void onSaveInstanceState(Bundle out) {
         super.onSaveInstanceState(out);
         out.putString(STATE_RECIPIENT, recipientId);
+        out.putInt(STATE_TRANSFER, transferId);
         if (file != null) out.putParcelable(STATE_URI, file.uri);
     }
 
@@ -206,8 +225,13 @@ public class SendFileActivity extends AppCompatActivity implements SessionManage
     // Envoi
     // ------------------------------------------------------------------
 
+    private boolean sending() {
+        Transfer t = transferId == -1 ? null : session.getTransfer(transferId);
+        return transferId != -1 && (t == null || !t.state.isFinished());
+    }
+
     private void updateSendButton() {
-        boolean ready = file != null && recipientId != null
+        boolean ready = file != null && recipientId != null && !sending()
                 && session.getStatus() == SessionManager.Status.CONNECTED;
         btnSend.setEnabled(ready);
         btnSend.setAlpha(ready ? 1f : 0.5f);
@@ -223,7 +247,52 @@ public class SendFileActivity extends AppCompatActivity implements SessionManage
     }
 
     private void send() {
-        // Prochaine étape (#22) : READY → YES_READY → TAKE/NICE → FINISH → COMPLETE.
-        Toast.makeText(this, R.string.send_not_implemented, Toast.LENGTH_LONG).show();
+        transferId = session.sendFile(file, Integer.parseInt(recipientId));
+        if (transferId == -1) {
+            Toast.makeText(this, R.string.send_failed_no_session, Toast.LENGTH_LONG).show();
+            return;
+        }
+        tvProgressTitle.setText(getString(R.string.transfer_to, file.name, recipientName()));
+        tvProgressPercent.setText("0 %");
+        tvProgressState.setText(R.string.transfer_waiting);
+        pbSend.setProgress(0);
+        btnCancelTransfer.setVisibility(View.VISIBLE);
+        cardProgress.setVisibility(View.VISIBLE);
+        updateSendButton();
+    }
+
+    // ------------------------------------------------------------------
+    // Progression (#22, #23)
+    // ------------------------------------------------------------------
+
+    @Override
+    public void onTransferChanged(Transfer t) {
+        if (t.transferId != transferId) return;
+        cardProgress.setVisibility(View.VISIBLE);
+        tvProgressTitle.setText(getString(R.string.transfer_to, t.fileName, session.participantName(t.peerId)));
+        tvProgressPercent.setText(t.percent() + " %");
+        pbSend.setProgress(t.percent());
+        switch (t.state) {
+            case WAITING_ACCEPT:
+                tvProgressState.setText(R.string.transfer_waiting);
+                break;
+            case SENDING:
+                tvProgressState.setText(getString(R.string.transfer_sending, t.blocksDone, t.blocksTotal));
+                break;
+            case VERIFYING:
+                tvProgressState.setText(R.string.transfer_verifying);
+                break;
+            case COMPLETED:
+                tvProgressState.setText(R.string.transfer_done);
+                break;
+            case FAILED:
+                tvProgressState.setText(getString(R.string.transfer_failed, t.error));
+                break;
+            case CANCELLED:
+                tvProgressState.setText(R.string.transfer_cancelled);
+                break;
+        }
+        btnCancelTransfer.setVisibility(t.state.isFinished() ? View.GONE : View.VISIBLE);
+        updateSendButton();
     }
 }
