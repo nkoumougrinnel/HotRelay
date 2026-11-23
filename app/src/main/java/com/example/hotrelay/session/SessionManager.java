@@ -273,6 +273,20 @@ public final class SessionManager {
 
     public String getHostName() { return hostName; }
 
+    /** IP de l'hôte vue par ce téléphone (client), ou celle du hotspot (hôte). */
+    public String getHostAddress() {
+        if (role == Role.CLIENT && hostIp != null) return hostIp.getHostAddress();
+        if (role == Role.HOST) return getHotspotIp();
+        return null;
+    }
+
+    /** Destinataires possibles : tous les participants sauf ce téléphone. */
+    public List<Participant> getOthers() {
+        List<Participant> out = new ArrayList<>();
+        for (Participant p : participants) if (!p.isMe()) out.add(p);
+        return out;
+    }
+
     /** Pour la couche transfert (bloc 2). */
     public HostSession getHostSession() { return host; }
 

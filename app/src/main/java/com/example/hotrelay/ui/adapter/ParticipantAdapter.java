@@ -18,7 +18,17 @@ import java.util.List;
 /** Liste des participants d'une session (écran hôte et onglet Appareils). */
 public class ParticipantAdapter extends RecyclerView.Adapter<ParticipantAdapter.ViewHolder> {
 
+    /** Appui sur un participant. */
+    public interface OnParticipantClick {
+        void onClick(Participant participant);
+    }
+
     private List<Participant> participants = new ArrayList<>();
+    private OnParticipantClick onClick;
+
+    public void setOnParticipantClick(OnParticipantClick listener) {
+        this.onClick = listener;
+    }
 
     public void setParticipants(List<Participant> newParticipants) {
         this.participants = new ArrayList<>(newParticipants);
@@ -54,6 +64,14 @@ public class ParticipantAdapter extends RecyclerView.Adapter<ParticipantAdapter.
             color = R.color.text_secondary;
         }
         holder.tvStatus.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), color));
+
+        if (onClick != null && !p.isMe()) {
+            holder.itemView.setOnClickListener(v -> onClick.onClick(p));
+            holder.itemView.setClickable(true);
+        } else {
+            holder.itemView.setOnClickListener(null);
+            holder.itemView.setClickable(false);
+        }
     }
 
     @Override

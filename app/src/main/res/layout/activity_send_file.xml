@@ -37,6 +37,7 @@
 
         <!-- Green Connected Badge -->
         <LinearLayout
+            android:id="@+id/badgeSendStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_badge_green"
@@ -52,8 +53,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/tvSendStatus"
                 android:layout_marginStart="4dp"
-                android:text="Connecté"
+                android:text="@string/status_connected"
                 android:textColor="@color/status_green"
                 android:textSize="12sp"
                 android:textStyle="bold" />
@@ -73,9 +75,9 @@
             android:padding="20dp">
 
             <TextView
+                android:id="@+id/tvSendVia"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Via l'hôte 192.168.43.1"
                 android:textColor="@color/text_secondary"
                 android:textSize="13sp" />
 
@@ -91,89 +93,23 @@
                 android:textSize="11sp"
                 android:textStyle="bold" />
 
-            <!-- Recipient Radio 1 (Aïcha - Selected) -->
-            <LinearLayout
+            <!-- Rempli par le code avec les participants de la session -->
+            <RadioGroup
+                android:id="@+id/rgRecipients"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_button_host_orange"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="14dp">
+                android:orientation="vertical" />
 
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:clickable="false" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Aïcha"
-                        android:textColor="@color/text_primary"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="192.168.43.87"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="12sp" />
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="8dp" />
-
-            <!-- Recipient Radio 2 (Hôte) -->
-            <LinearLayout
+            <TextView
+                android:id="@+id/tvNoRecipient"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_rounded_card"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="14dp">
-
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="false"
-                    android:clickable="false" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Hôte (téléphone relais)"
-                        android:textColor="@color/text_primary"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="192.168.43.1"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="12sp" />
-                </LinearLayout>
-
-            </LinearLayout>
+                android:padding="14dp"
+                android:text="@string/no_recipient"
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp"
+                android:visibility="gone" />
 
             <!-- Section 2: 2 - FICHIER -->
             <TextView
@@ -188,9 +124,12 @@
                 android:textStyle="bold" />
 
             <LinearLayout
+                android:id="@+id/cardFile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_button_host_orange"
+                android:background="@drawable/bg_rounded_card"
+                android:clickable="true"
+                android:focusable="true"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:padding="14dp">
@@ -212,25 +151,30 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/tvFileName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="rapport_tp_reseau.pdf"
+                        android:ellipsize="middle"
+                        android:singleLine="true"
+                        android:text="@string/no_file_selected"
                         android:textColor="@color/text_primary"
                         android:textSize="14sp"
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/tvFileMeta"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="2,4 Mo • 153 paquets"
+                        android:text="@string/tap_to_browse"
                         android:textColor="@color/text_secondary"
                         android:textSize="12sp" />
                 </LinearLayout>
 
                 <TextView
+                    android:id="@+id/tvFileAction"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Changer"
+                    android:text="@string/choose"
                     android:textColor="@color/primary"
                     android:textSize="13sp"
                     android:textStyle="bold" />
@@ -254,6 +198,7 @@
                 android:padding="16dp">
 
                 <TextView
+                    android:id="@+id/tvSendLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/send_via_relay"
@@ -262,121 +207,14 @@
                     android:textStyle="bold" />
             </LinearLayout>
 
-            <!-- Section 3: REÇUS -->
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:layout_marginBottom="8dp"
-                android:letterSpacing="0.05"
-                android:text="REÇUS"
-                android:textColor="@color/text_secondary"
-                android:textSize="11sp"
-                android:textStyle="bold" />
-
-            <!-- Received Item 1 -->
-            <LinearLayout
+                android:id="@+id/tvSendHint"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_rounded_card"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="12dp">
-
-                <ImageView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:background="@drawable/bg_badge_gray"
-                    android:contentDescription="@null"
-                    android:padding="6dp"
-                    android:src="@drawable/ic_file_document"
-                    app:tint="@color/text_primary" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="photo_10.jpg"
-                        android:textColor="@color/text_primary"
-                        android:textSize="13sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="de Aïcha • 1,2 Mo"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="11sp" />
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Ouvrir"
-                    android:textColor="@color/primary"
-                    android:textSize="13sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="8dp" />
-
-            <!-- Received Item 2 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_rounded_card"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="12dp">
-
-                <ImageView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:background="@drawable/bg_badge_gray"
-                    android:contentDescription="@null"
-                    android:padding="6dp"
-                    android:src="@drawable/ic_file_document"
-                    app:tint="@color/text_primary" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="schema_udp.png"
-                        android:textColor="@color/text_primary"
-                        android:textSize="13sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="de Aïcha • 840 Ko"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="11sp" />
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Ouvrir"
-                    android:textColor="@color/primary"
-                    android:textSize="13sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:textColor="@color/text_muted"
+                android:textSize="12sp" />
 
         </LinearLayout>
 
