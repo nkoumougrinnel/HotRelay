@@ -38,20 +38,25 @@ public final class HostSession {
         /** La liste a changé. Contient l'hôte (ID 0) en premier. */
         void onParticipantsChanged(List<Messages.Participant> participants);
 
-        /** Un client est parti (BYE ou silence) : ses transferts doivent être interrompus (#21). */
+        /** Un client est parti (BYE ou silence). Ses transferts sont déjà interrompus par le relais. */
         default void onParticipantLeft(ParticipantRegistry.Entry participant, String reason) {}
-
-        /**
-         * Message de transfert (READY, TAKE, NICE…) reçu d'un client connu.
-         * Le relais (#21) se branche ici.
-         */
-        default void onTransferPacket(HrpPacket packet, ParticipantRegistry.Entry from) {}
     }
 
     private final String hostName;
     private final int port;
     private final Listener listener;
     private final ParticipantRegistry registry = new ParticipantRegistry();
+    private final TransferRouter router = new TransferRouter(new TransferRouter.Sink() {
+        @Override
+        public boolean sendTo(int participantId, HrpPacket packet) {
+            return HostSession.this.sendTo(participantId, packet);
+        }
+
+        @Override
+        public boolean isConnected(int participantId) {
+            return registry.get(participantId) != null;
+        }
+    });
 
     // Modifiables par les tests (valeurs du protocole par défaut)
     long heartbeatMs = Hrp.HEARTBEAT_MS;
@@ -119,6 +124,24 @@ public final class HostSession {
         return list;
     }
 
+    /**
+     * L'hôte veut lui aussi envoyer / recevoir des fichiers : les messages de transfert
+     * dont il est SRC ou DST arrivent ici (sur le thread de la session).
+     * Sans endpoint, un READY vers l'hôte reçoit ERROR UNKNOWN_PARTICIPANT.
+     */
+    public void setLocalEndpoint(TransferRouter.LocalEndpoint endpoint) {
+        post(() -> router.setLocalEndpoint(endpoint));
+    }
+
+    /** Message de transfert émis par l'hôte (ID 0) : passe par le relais comme ceux des clients. */
+    public void sendFromHost(HrpPacket packet) {
+        post(() -> router.fromHost(packet));
+    }
+
+    TransferRouter getRouter() {
+        return router;
+    }
+
     public ParticipantRegistry getRegistry() {
         return registry;
     }
@@ -179,7 +202,7 @@ public final class HostSession {
                     if (sender == null) {
                         Log.d(TAG, p + " d'un inconnu ignoré");
                     } else if (Hrp.isTransferMessage(p.type)) {
-                        listener.onTransferPacket(p, sender);
+                        router.onPacket(p, sender.id);
                     } else {
                         Log.d(TAG, p + " ignoré (réservé à l'hôte)");
                     }
@@ -229,11 +252,13 @@ public final class HostSession {
         for (ParticipantRegistry.Entry e : registry.expired(now, timeoutMs)) {
             removeParticipant(e, "silence de " + (now - e.lastSeen) + " ms");
         }
+        router.expireIdle(now);
     }
 
     private void removeParticipant(ParticipantRegistry.Entry e, String reason) {
         if (registry.remove(e.id) == null) return;
         Log.i(TAG, "départ (" + reason + ") : " + e);
+        router.onParticipantLeft(e.id);
         listener.onParticipantLeft(e, reason);
         broadcastTable();
         notifyParticipants();
