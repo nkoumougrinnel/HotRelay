@@ -190,6 +190,11 @@ public final class TransferEngine {
         ScheduledFuture<?> timer;
         String error;
         long lastNotify;
+        long packets;
+        long retransmissions;
+        final long startedAt = System.currentTimeMillis();
+        long endedAt;
+        long retriedCells;
 
         Outgoing(int tid, int dst, String name, long size, Source source) {
             this.tid = tid;
@@ -201,7 +206,8 @@ public final class TransferEngine {
         }
 
         Transfer snapshot() {
-            return new Transfer(tid, true, dst, name, size, seq, total, state, error, null);
+            return new Transfer(tid, true, dst, name, size, seq, total, state, error, null,
+                    packets, retransmissions, startedAt, endedAt, retriedCells);
         }
     }
 
@@ -273,6 +279,7 @@ public final class TransferEngine {
         o.pending = packet;
         o.attempt = 0;
         o.generation++;
+        if (packet.type == Hrp.TAKE) o.packets++;
         out.send(packet);
         schedule(o);
     }
@@ -290,6 +297,11 @@ public final class TransferEngine {
             return;
         }
         o.attempt++;
+        o.retransmissions++;
+        if (o.pending.type == Hrp.TAKE) {
+            o.packets++;
+            o.retriedCells |= 1L << Transfer.cellOf(o.seq, o.total);
+        }
         Log.d(TAG, String.format("%08X : renvoi %d de %s", o.tid, o.attempt, Hrp.typeName(o.pending.type)));
         out.send(o.pending);
         schedule(o);
@@ -310,6 +322,7 @@ public final class TransferEngine {
         o.generation++;
         o.state = state;
         o.error = error;
+        o.endedAt = System.currentTimeMillis();
         closeQuietly(o.in);
         if (error != null) Log.w(TAG, String.format("envoi %08X : %s (%s)", o.tid, state, error));
         notify(o.snapshot());
@@ -334,6 +347,11 @@ public final class TransferEngine {
         String error;
         String location;
         long lastNotify;
+        long packets;
+        long duplicates;
+        final long startedAt = System.currentTimeMillis();
+        long endedAt;
+        long retriedCells;
 
         Incoming(Messages.Ready r) {
             this.tid = r.transferId;
@@ -345,7 +363,8 @@ public final class TransferEngine {
         }
 
         Transfer snapshot() {
-            return new Transfer(tid, false, src, name, size, expected, total, state, error, location);
+            return new Transfer(tid, false, src, name, size, expected, total, state, error, location,
+                    packets, duplicates, startedAt, endedAt, retriedCells);
         }
     }
 
@@ -381,6 +400,7 @@ public final class TransferEngine {
         long expectedLen = t.seq == in.total - 1 ? in.size - t.seq * Hrp.MAX_DATA : Hrp.MAX_DATA;
         if (t.data.length != expectedLen) return;
         in.lastActivity = System.currentTimeMillis();
+        in.packets++;
 
         if (t.seq == in.expected) {
             try {
@@ -395,6 +415,8 @@ public final class TransferEngine {
             notifyProgress(in);
         } else if (t.seq < in.expected) {
             // Doublon (notre NICE s'est perdu) : on ne réécrit pas, on reconfirme.
+            in.duplicates++;
+            in.retriedCells |= 1L << Transfer.cellOf(t.seq, in.total);
             out.send(new Messages.Nice(in.tid, t.seq).toPacket());
         }
         // SEQ > attendu : ignoré (§9)
@@ -423,6 +445,7 @@ public final class TransferEngine {
             return;
         }
         in.state = Transfer.State.COMPLETED;
+        in.endedAt = System.currentTimeMillis();
         Log.i(TAG, String.format("réception %08X terminée, SHA-256 vérifié → %s", in.tid, in.location));
         out.send(new Messages.Complete(in.tid).toPacket());
         notify(in.snapshot());
@@ -434,6 +457,7 @@ public final class TransferEngine {
         if (in.output != null) in.output.abort();
         in.state = Transfer.State.CANCELLED;
         in.error = "annulé par l'expéditeur";
+        in.endedAt = System.currentTimeMillis();
         notify(in.snapshot());
     }
 
@@ -452,6 +476,7 @@ public final class TransferEngine {
         if (in.output != null) in.output.abort(); // fichier partiel supprimé (§11)
         in.state = Transfer.State.FAILED;
         in.error = reason;
+        in.endedAt = System.currentTimeMillis();
         if (errorCode != 0) out.send(new Messages.ErrorMessage(errorCode, in.tid).toPacket());
         Log.w(TAG, String.format("réception %08X échouée : %s", in.tid, reason));
         notify(in.snapshot());

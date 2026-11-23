@@ -1,10 +1,16 @@
 package com.example.hotrelay;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
@@ -24,6 +30,10 @@ public class MainActivity extends AppCompatActivity {
     public static final String EXTRA_TAB = "tab";
 
     private BottomNavigationView bottomNav;
+
+    /** Android 13+ : demander l'autorisation d'afficher les notifications de fin de transfert. */
+    private final ActivityResultLauncher<String> askNotifications =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), granted -> {});
 
     /** Prévient l'utilisateur quand la session se termine sans qu'il l'ait demandé. */
     private final SessionManager.Listener sessionEnded = new SessionManager.Listener() {
@@ -80,6 +90,12 @@ public class MainActivity extends AppCompatActivity {
         });
 
         openRequestedTab(getIntent());
+
+        if (savedInstanceState == null && Build.VERSION.SDK_INT >= 33
+                && ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+                != PackageManager.PERMISSION_GRANTED) {
+            askNotifications.launch(Manifest.permission.POST_NOTIFICATIONS);
+        }
     }
 
     @Override
