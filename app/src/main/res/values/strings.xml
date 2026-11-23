@@ -42,4 +42,30 @@
     <!-- Progress Screen (Screen 4) -->
     <string name="sending_in_progress">Envoi en cours</string>
     <string name="cancel_send">Annuler l\'envoi</string>
+
+    <!-- Session réelle (#16, #18) -->
+    <string name="status_host">Hôte</string>
+    <string name="status_connected">Connecté</string>
+    <string name="status_disconnected">Déconnecté</string>
+    <string name="udp_port_label">port UDP %1$d</string>
+    <string name="host_ip_unknown">IP introuvable</string>
+    <string name="host_ip_unknown_hint">Activez le point d\'accès Wi-Fi de ce téléphone, puis revenez sur cet écran.</string>
+    <string name="host_port_error">Impossible d\'ouvrir le port %1$d : %2$s</string>
+    <string name="no_clients_yet">En attente d\'appareils… Les invités se connectent à votre hotspot puis appuient sur « Rejoindre un hôte ».</string>
+    <string name="no_transfer_in_progress">Aucun transfert en cours</string>
+    <string name="host_ip_detected">Détectée automatiquement depuis votre Wi-Fi</string>
+    <string name="host_ip_not_detected">Non détectée : vérifiez que vous êtes connecté au hotspot de l\'hôte</string>
+    <string name="invalid_ip">Adresse IP invalide</string>
+    <string name="name_required">Saisissez votre nom</string>
+    <string name="connecting">Connexion…</string>
+    <string name="joined_as">Connecté à « %1$s » (ID %2$d)</string>
+    <string name="session_busy_client">Vous êtes déjà dans une session. Quittez-la d\'abord (onglet Appareils).</string>
+    <string name="session_busy_host">Vous êtes l\'hôte d\'une session. Arrêtez le relais d\'abord.</string>
+    <string name="devices_no_session">Aucune session.\nCréez-en une ou rejoignez un hôte depuis l\'accueil.</string>
+    <string name="devices_joining">Connexion à l\'hôte…</string>
+    <string name="devices_session_host">Vous êtes l\'hôte · %1$d participant(s)</string>
+    <string name="devices_session_client">Session de « %1$s » · %2$d participant(s)</string>
+    <string name="leave_session">Quitter la session</string>
+    <string name="session_ended">Session terminée : %1$s</string>
+    <string name="device_name_saved">Nom enregistré</string>
 </resources>

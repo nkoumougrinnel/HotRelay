@@ -15,12 +15,13 @@ import com.example.hotrelay.model.Participant;
 import java.util.ArrayList;
 import java.util.List;
 
+/** Liste des participants d'une session (écran hôte et onglet Appareils). */
 public class ParticipantAdapter extends RecyclerView.Adapter<ParticipantAdapter.ViewHolder> {
 
     private List<Participant> participants = new ArrayList<>();
 
     public void setParticipants(List<Participant> newParticipants) {
-        this.participants = newParticipants;
+        this.participants = new ArrayList<>(newParticipants);
         notifyDataSetChanged();
     }
 
@@ -33,17 +34,26 @@ public class ParticipantAdapter extends RecyclerView.Adapter<ParticipantAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Participant participant = participants.get(position);
-        holder.tvName.setText(participant.getName());
-        holder.tvIp.setText(participant.getIpAddress());
+        Participant p = participants.get(position);
+        holder.tvName.setText(p.isMe() ? p.getName() + " (vous)" : p.getName());
 
-        if (position == 0) {
-            holder.tvStatus.setText("Envoie...");
-            holder.tvStatus.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.primary));
+        // Les clients ne connaissent pas l'IP des autres : on affiche alors l'ID.
+        String detail = "ID " + p.getId();
+        if (p.getIpAddress() != null) detail += " · " + p.getIpAddress();
+        holder.tvIp.setText(detail);
+
+        int color;
+        if (p.isHost()) {
+            holder.tvStatus.setText(R.string.status_host);
+            color = R.color.primary;
+        } else if (p.isConnected()) {
+            holder.tvStatus.setText(R.string.status_connected);
+            color = R.color.status_green;
         } else {
-            holder.tvStatus.setText("Connectée");
-            holder.tvStatus.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.status_green));
+            holder.tvStatus.setText(R.string.status_disconnected);
+            color = R.color.text_secondary;
         }
+        holder.tvStatus.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), color));
     }
 
     @Override
