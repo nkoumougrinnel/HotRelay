@@ -7,6 +7,8 @@
     <!-- Lire l'IP de la passerelle Wi-Fi (#13) -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!-- Notification à la fin d'un transfert (#27), demandée au lancement sur Android 13+ -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:allowBackup="true"

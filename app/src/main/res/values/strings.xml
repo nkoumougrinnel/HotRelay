@@ -101,4 +101,47 @@
     <string name="received_file">Reçu de %1$s : %2$s (Téléchargements/HotRelay)</string>
     <string name="receive_failed">Réception de %1$s échouée : %2$s</string>
     <string name="receiving_file">Réception de « %1$s » de %2$s…</string>
+
+    <!-- Onglet Transferts (#23, #27) -->
+    <string name="no_transfers">Aucun transfert pour l\'instant.\nEnvoyez un fichier depuis l\'onglet Appareils.</string>
+    <string name="history">HISTORIQUE</string>
+    <string name="detail_sending">ENVOI EN COURS</string>
+    <string name="detail_receiving">RÉCEPTION EN COURS</string>
+    <string name="detail_sent">ENVOI TERMINÉ</string>
+    <string name="detail_received">RÉCEPTION TERMINÉE</string>
+    <string name="detail_failed">TRANSFERT ÉCHOUÉ</string>
+    <string name="detail_cancelled">TRANSFERT ANNULÉ</string>
+    <string name="you">Vous</string>
+    <string name="you_host">Vous (hôte)</string>
+    <string name="host">Hôte</string>
+    <string name="id_label">ID %1$d</string>
+    <string name="bytes_progress">%1$s sur %2$s</string>
+    <string name="bytes_progress_eta">%1$s sur %2$s • environ %3$s restante(s)</string>
+    <string name="metric_blocks_sent">Paquets confirmés</string>
+    <string name="metric_blocks_received">Paquets reçus</string>
+    <string name="metric_take_sent">TAKE envoyés</string>
+    <string name="metric_take_received">TAKE reçus</string>
+    <string name="metric_retries">Retransmissions</string>
+    <string name="metric_duplicates">Doublons reçus</string>
+    <string name="metric_speed">Débit</string>
+    <string name="grid_title">PAQUETS · %1$d BLOCS</string>
+    <string name="grid_title_grouped">PAQUETS · %1$d BLOCS (1 case ≈ %2$d blocs)</string>
+    <string name="grid_legend_out">🟩 NICE reçu     🟧 Retransmis     🟦 Envoyé, en attente\n⬜ À envoyer</string>
+    <string name="grid_legend_in">🟩 Reçu et écrit     🟧 Reçu en double     🟦 En cours\n⬜ À recevoir</string>
+    <string name="item_sent_to">Envoyé à %1$s • %2$s</string>
+    <string name="item_received_from">Reçu de %1$s • %2$s</string>
+    <string name="item_in_progress">%1$d %% • via l\'hôte</string>
+    <string name="item_waiting">En attente…</string>
+    <string name="item_verifying">Vérification…</string>
+    <string name="item_done_out">Transfert réussi</string>
+    <string name="item_done_in">Reçu • Terminé</string>
+    <string name="item_failed">Échec • %1$s</string>
+    <string name="item_cancelled">Annulé</string>
+    <string name="notif_channel">Transferts</string>
+    <string name="notif_sent_title">Fichier envoyé</string>
+    <string name="notif_received_title">Fichier reçu</string>
+    <string name="notif_failed_title">Transfert échoué</string>
+    <string name="notif_sent_text">%1$s → %2$s</string>
+    <string name="notif_received_text">%1$s de %2$s (Téléchargements/HotRelay)</string>
+    <string name="notif_failed_text">%1$s : %2$s</string>
 </resources>

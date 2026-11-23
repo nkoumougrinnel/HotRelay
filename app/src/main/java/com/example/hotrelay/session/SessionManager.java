@@ -86,6 +86,7 @@ public final class SessionManager {
     private volatile TransferEngine engine;
     /** Tous les transferts de cette exécution de l'app, du plus ancien au plus récent. */
     private final Map<Integer, Transfer> transfers = new LinkedHashMap<>();
+    private TransferNotifier notifier;
 
     private SessionManager(Context app) {
         this.app = app;
@@ -269,6 +270,11 @@ public final class SessionManager {
         Transfer before = transfers.put(t.transferId, t);
         for (Listener l : listeners) l.onTransferChanged(t);
         if (!t.outgoing) announceIncoming(before, t);
+        boolean justFinished = t.state.isFinished() && (before == null || !before.state.isFinished());
+        if (justFinished) {
+            if (notifier == null) notifier = new TransferNotifier(app);
+            notifier.onFinished(t, participantName(t.peerId));
+        }
     }
 
     /** Destinataire : un message court, quel que soit l'écran ouvert. */

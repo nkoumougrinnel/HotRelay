@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="12dp"
@@ -40,9 +41,11 @@
 
                 <TextView
                     android:id="@+id/tvFileName"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
+                    android:ellipsize="middle"
+                    android:singleLine="true"
                     android:layout_height="wrap_content"
-                    android:text="Document.pdf"
+                    tools:text="Document.pdf"
                     android:textColor="@color/text_primary"
                     android:textSize="15sp"
                     android:textStyle="bold" />
@@ -66,10 +69,19 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
-                        android:text="Reçu • Terminé"
+                        tools:text="Reçu • Terminé"
                         android:textColor="@color/status_green"
                         android:textSize="13sp" />
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tvTransferMeta"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:textColor="@color/text_muted"
+                    android:textSize="12sp"
+                    tools:text="Envoyé à Paul • 2,4 Mo" />
             </LinearLayout>
 
             <ImageView
@@ -87,8 +99,8 @@
             android:layout_width="match_parent"
             android:layout_height="8dp"
             android:layout_marginTop="12dp"
-            android:progress="100"
-            android:progressDrawable="@drawable/bg_button_primary"
+            android:max="100"
+            android:progressTint="@color/primary"
             android:visibility="gone" />
 
     </LinearLayout>

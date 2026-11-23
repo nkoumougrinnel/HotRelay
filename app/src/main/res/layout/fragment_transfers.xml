@@ -12,25 +12,14 @@
         android:layout_height="?attr/actionBarSize"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingStart="12dp"
+        android:paddingStart="20dp"
         android:paddingEnd="12dp">
-
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="@null"
-            android:padding="8dp"
-            android:src="@drawable/ic_arrow_right"
-            android:rotation="180"
-            app:tint="@color/text_primary" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
             android:layout_weight="1"
-            android:text="@string/sending_in_progress"
+            android:text="@string/nav_transfers"
             android:textColor="@color/text_primary"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -48,7 +37,37 @@
             android:orientation="vertical"
             android:padding="20dp">
 
-            <!-- Route Diagram Header Card -->
+            <!-- Aucun transfert -->
+            <TextView
+                android:id="@+id/tvTransfersEmpty"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_rounded_card"
+                android:gravity="center"
+                android:padding="24dp"
+                android:text="@string/no_transfers"
+                android:textColor="@color/text_secondary"
+                android:textSize="14sp" />
+
+            <!-- Détail du transfert sélectionné -->
+            <LinearLayout
+                android:id="@+id/detailContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tvDetailTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:letterSpacing="0.05"
+                android:textColor="@color/text_secondary"
+                android:textSize="11sp"
+                android:textStyle="bold" />
+
+            <!-- Trajet : expéditeur → hôte → destinataire -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -57,8 +76,8 @@
                 android:orientation="horizontal"
                 android:padding="20dp">
 
-                <!-- Node 1: Vous -->
                 <LinearLayout
+                    android:id="@+id/node1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -80,24 +99,27 @@
                     </FrameLayout>
 
                     <TextView
+                        android:id="@+id/tvNode1Name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="Vous"
+                        android:ellipsize="end"
+                        android:maxWidth="96dp"
+                        android:singleLine="true"
                         android:textColor="@color/text_primary"
                         android:textSize="13sp"
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/tvNode1Detail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text=".112"
                         android:textColor="@color/text_secondary"
                         android:textSize="11sp" />
                 </LinearLayout>
 
-                <!-- Dotted Line 1 -->
                 <TextView
+                    android:id="@+id/tvLine1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:letterSpacing="0.2"
@@ -106,8 +128,8 @@
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
-                <!-- Node 2: Hôte -->
                 <LinearLayout
+                    android:id="@+id/node2"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -128,24 +150,27 @@
                     </FrameLayout>
 
                     <TextView
+                        android:id="@+id/tvNode2Name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="Hôte"
+                        android:ellipsize="end"
+                        android:maxWidth="96dp"
+                        android:singleLine="true"
                         android:textColor="@color/text_primary"
                         android:textSize="13sp"
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/tvNode2Detail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text=".1"
                         android:textColor="@color/text_secondary"
                         android:textSize="11sp" />
                 </LinearLayout>
 
-                <!-- Dotted Line 2 -->
                 <TextView
+                    android:id="@+id/tvLine2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:letterSpacing="0.2"
@@ -154,8 +179,8 @@
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
-                <!-- Node 3: Aïcha -->
                 <LinearLayout
+                    android:id="@+id/node3"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -177,18 +202,21 @@
                     </FrameLayout>
 
                     <TextView
+                        android:id="@+id/tvNode3Name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="Aïcha"
+                        android:ellipsize="end"
+                        android:maxWidth="96dp"
+                        android:singleLine="true"
                         android:textColor="@color/text_primary"
                         android:textSize="13sp"
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/tvNode3Detail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text=".87"
                         android:textColor="@color/text_secondary"
                         android:textSize="11sp" />
                 </LinearLayout>
@@ -199,59 +227,56 @@
                 android:layout_width="match_parent"
                 android:layout_height="20dp" />
 
-            <!-- Active File Transfer Section -->
+            <!-- Fichier et avancement -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="rapport_tp_reseau.pdf"
-                        android:textColor="@color/text_primary"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="64 %"
-                        android:textColor="@color/primary"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <ProgressBar
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="8dp"
-                    android:layout_marginTop="10dp"
-                    android:progress="64"
-                    android:progressDrawable="@drawable/bg_button_orange" />
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/tvDetailFile"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ellipsize="middle"
+                    android:singleLine="true"
+                    android:textColor="@color/text_primary"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvDetailPercent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="1,5 Mo sur 2,4 Mo • environ 1 s restante"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="12sp" />
-
+                    android:layout_marginStart="8dp"
+                    android:textColor="@color/primary"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
             </LinearLayout>
+
+            <ProgressBar
+                android:id="@+id/pbDetail"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="8dp"
+                android:layout_marginTop="10dp"
+                android:max="100"
+                android:progressTint="@color/primary" />
+
+            <TextView
+                android:id="@+id/tvDetailState"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp" />
 
             <Space
                 android:layout_width="match_parent"
                 android:layout_height="20dp" />
 
-            <!-- Metrics Card (2x2 Grid) -->
+            <!-- Compteurs (2 x 2) -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -271,18 +296,19 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/tvMetricBlocks"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="98 / 153"
+                            android:text="0"
                             android:textColor="@color/text_primary"
                             android:textSize="22sp"
                             android:textStyle="bold" />
 
                         <TextView
+                            android:id="@+id/tvMetricBlocksLabel"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
-                            android:text="Paquets envoyés"
                             android:textColor="@color/text_secondary"
                             android:textSize="12sp" />
                     </LinearLayout>
@@ -294,18 +320,19 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/tvMetricAcks"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="96"
+                            android:text="0"
                             android:textColor="@color/status_green"
                             android:textSize="22sp"
                             android:textStyle="bold" />
 
                         <TextView
+                            android:id="@+id/tvMetricAcksLabel"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
-                            android:text="Accusés reçus (ACK)"
                             android:textColor="@color/text_secondary"
                             android:textSize="12sp" />
                     </LinearLayout>
@@ -328,18 +355,19 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/tvMetricRetries"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="4"
+                            android:text="0"
                             android:textColor="@color/primary"
                             android:textSize="22sp"
                             android:textStyle="bold" />
 
                         <TextView
+                            android:id="@+id/tvMetricRetriesLabel"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
-                            android:text="Retransmissions"
                             android:textColor="@color/text_secondary"
                             android:textSize="12sp" />
                     </LinearLayout>
@@ -351,18 +379,19 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/tvMetricSpeed"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="820 Ko/s"
+                            android:text="0"
                             android:textColor="@color/text_primary"
                             android:textSize="22sp"
                             android:textStyle="bold" />
 
                         <TextView
+                            android:id="@+id/tvMetricSpeedLabel"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
-                            android:text="Débit"
                             android:textColor="@color/text_secondary"
                             android:textSize="12sp" />
                     </LinearLayout>
@@ -375,7 +404,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="20dp" />
 
-            <!-- Section: PAQUETS Grid -->
+            <!-- Grille des paquets -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -384,20 +413,20 @@
                 android:padding="16dp">
 
                 <TextView
+                    android:id="@+id/tvGridTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:letterSpacing="0.05"
-                    android:text="PAQUETS"
                     android:textColor="@color/text_secondary"
                     android:textSize="11sp"
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/tvPacketGrid"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:lineSpacingExtra="4dp"
-                    android:text="🟩🟩🟩🟩🟩🟩🟩🟩🟧🟩🟩🟩🟩🟩🟩🟩🟩\n🟩🟩🟩🟩🟩🟩🟧🟧🟩🟩🟩🟩🟩🟩🟩🟩🟩\n🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟧🟩🟩🟩🟩🟩🟩\n🟩🟩🟩🟩🟩🟦🟦⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜\n⬜⬜⬜⬜⬜⬜"
                     android:textSize="12sp" />
 
                 <Space
@@ -405,24 +434,21 @@
                     android:layout_height="12dp" />
 
                 <TextView
+                    android:id="@+id/tvGridLegend"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="3dp"
-                    android:text="🟩 ACK reçu     🟧 Retransmis     🟦 Envoyé, en attente\n⬜ À envoyer"
                     android:textColor="@color/text_secondary"
                     android:textSize="11sp" />
 
             </LinearLayout>
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="28dp" />
-
-            <!-- Cancel Button -->
+            <!-- Annuler (envoi en cours seulement) -->
             <LinearLayout
                 android:id="@+id/btnCancelSend"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
                 android:background="@drawable/bg_button_outline_orange"
                 android:clickable="true"
                 android:focusable="true"
@@ -437,6 +463,28 @@
                     android:textSize="16sp"
                     android:textStyle="bold" />
             </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- Historique -->
+            <TextView
+                android:id="@+id/tvHistoryTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
+                android:layout_marginBottom="8dp"
+                android:letterSpacing="0.05"
+                android:text="@string/history"
+                android:textColor="@color/text_secondary"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:visibility="gone" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvTransfers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false" />
 
         </LinearLayout>
 
