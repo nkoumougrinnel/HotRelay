@@ -6,16 +6,23 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 
+import com.example.hotrelay.R;
+import com.example.hotrelay.files.FileInfo;
 import com.example.hotrelay.model.Participant;
 import com.example.hotrelay.network.NetworkUtils;
 import com.example.hotrelay.protocol.Hrp;
 import com.example.hotrelay.protocol.Messages;
+import com.example.hotrelay.transfer.DownloadsStorage;
+import com.example.hotrelay.transfer.Transfer;
+import com.example.hotrelay.transfer.TransferEngine;
 
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
@@ -47,6 +54,9 @@ public final class SessionManager {
 
         /** La session s'est terminée sans que l'utilisateur l'ait demandé (EXIT, hôte perdu). */
         default void onSessionEnded(String reason) {}
+
+        /** Un transfert (envoi ou réception) a avancé ou changé d'état. */
+        default void onTransferChanged(Transfer transfer) {}
     }
 
     private static final String PREFS = "hotrelay";
@@ -71,6 +81,11 @@ public final class SessionManager {
     private int myId = -1;
     private String hostName = "";
     private InetAddress hostIp;
+
+    /** Moteur de transfert de la session en cours (créé dès qu'on connaît son ID). */
+    private volatile TransferEngine engine;
+    /** Tous les transferts de cette exécution de l'app, du plus ancien au plus récent. */
+    private final Map<Integer, Transfer> transfers = new LinkedHashMap<>();
 
     private SessionManager(Context app) {
         this.app = app;
@@ -121,6 +136,9 @@ public final class SessionManager {
             }
         });
         h.start();
+        TransferEngine e = newEngine(Hrp.HOST_ID, h::sendFromHost);
+        h.setLocalEndpoint(e::onPacket); // l'hôte envoie / reçoit lui aussi
+        engine = e;
         host = h;
         role = Role.HOST;
         status = Status.CONNECTED;
@@ -160,10 +178,19 @@ public final class SessionManager {
     public void join(InetAddress hostAddress, String name) throws SocketException {
         if (role != Role.NONE) throw new IllegalStateException("une session est déjà en cours");
         setDeviceName(name);
+        final ClientSession[] self = new ClientSession[1];
         ClientSession c = new ClientSession(getDeviceName(), hostAddress, new ClientSession.Listener() {
             @Override
             public void onJoined(int id, String hName) {
+                // Le moteur doit exister avant le premier READY : créé ici, sur le thread réseau.
+                engine = newEngine(id, self[0]::send);
                 main.post(() -> onClientJoined(id, hName));
+            }
+
+            @Override
+            public void onTransferPacket(com.example.hotrelay.protocol.HrpPacket packet) {
+                TransferEngine e = engine;
+                if (e != null) e.onPacket(packet);
             }
 
             @Override
@@ -181,6 +208,7 @@ public final class SessionManager {
                 main.post(() -> onClientDisconnected(reason));
             }
         });
+        self[0] = c;
         c.start();
         client = c;
         hostIp = hostAddress;
@@ -217,13 +245,88 @@ public final class SessionManager {
     }
 
     private void onClientJoinFailed(String reason) {
+        stopEngine(reason);
         reset();
         for (Listener l : listeners) l.onJoinFailed(reason);
     }
 
     private void onClientDisconnected(String reason) {
+        stopEngine(reason);
         reset();
         for (Listener l : listeners) l.onSessionEnded(reason);
+    }
+
+    // ------------------------------------------------------------------
+    // Transferts (#22, #23)
+    // ------------------------------------------------------------------
+
+    private TransferEngine newEngine(int id, TransferEngine.PacketSender sender) {
+        return new TransferEngine(id, sender, new DownloadsStorage(app),
+                t -> main.post(() -> onTransferUpdate(t)));
+    }
+
+    private void onTransferUpdate(Transfer t) {
+        Transfer before = transfers.put(t.transferId, t);
+        for (Listener l : listeners) l.onTransferChanged(t);
+        if (!t.outgoing) announceIncoming(before, t);
+    }
+
+    /** Destinataire : un message court, quel que soit l'écran ouvert. */
+    private void announceIncoming(Transfer before, Transfer t) {
+        boolean changed = before == null || before.state != t.state;
+        if (!changed) return;
+        String from = participantName(t.peerId);
+        String msg = null;
+        if (before == null) {
+            msg = app.getString(R.string.receiving_file, t.fileName, from);
+        } else if (t.state == Transfer.State.COMPLETED) {
+            msg = app.getString(R.string.received_file, from, t.fileName);
+        } else if (t.state == Transfer.State.FAILED) {
+            msg = app.getString(R.string.receive_failed, t.fileName, t.error);
+        }
+        if (msg != null) android.widget.Toast.makeText(app, msg, android.widget.Toast.LENGTH_LONG).show();
+    }
+
+    /**
+     * Envoie un fichier à un participant.
+     *
+     * @return le TRANSFER_ID, ou -1 s'il n'y a pas de session connectée.
+     */
+    public int sendFile(FileInfo file, int recipientId) {
+        TransferEngine e = engine;
+        if (e == null || status != Status.CONNECTED) return -1;
+        return e.send(file.name, file.size, () -> file.open(app.getContentResolver()), recipientId);
+    }
+
+    /** Annule un envoi en cours (CANCEL ×3). */
+    public void cancelTransfer(int transferId) {
+        TransferEngine e = engine;
+        if (e != null) e.cancel(transferId);
+    }
+
+    public Transfer getTransfer(int transferId) {
+        return transfers.get(transferId);
+    }
+
+    /** Transferts du plus récent au plus ancien. */
+    public List<Transfer> getTransfers() {
+        List<Transfer> l = new ArrayList<>(transfers.values());
+        Collections.reverse(l);
+        return l;
+    }
+
+    /** Nom d'un participant par son ID (ou « ID n » s'il est parti). */
+    public String participantName(int id) {
+        for (Participant p : participants) {
+            if (p.getId().equals(String.valueOf(id))) return p.getName();
+        }
+        return "ID " + id;
+    }
+
+    private void stopEngine(String reason) {
+        TransferEngine e = engine;
+        engine = null;
+        if (e != null) e.shutdown(reason);
     }
 
     // ------------------------------------------------------------------
@@ -232,6 +335,7 @@ public final class SessionManager {
 
     /** Arrête la session en cours (hôte : EXIT ×3 ; client : BYE). */
     public void stop() {
+        stopEngine("session fermée");
         if (host != null) host.stop();
         if (client != null) client.leave();
         reset();

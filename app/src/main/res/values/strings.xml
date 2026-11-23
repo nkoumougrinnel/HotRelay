@@ -87,6 +87,18 @@
     <string name="send_need_recipient">Choisissez un destinataire</string>
     <string name="send_need_file">Choisissez un fichier</string>
     <string name="send_ready">%1$s → %2$s</string>
-    <string name="send_not_implemented">L\'envoi bloc par bloc arrive à l\'étape suivante (#22).</string>
     <string name="send_file">Envoyer un fichier</string>
+
+    <!-- Transferts (#22) -->
+    <string name="transfer_to">%1$s → %2$s</string>
+    <string name="transfer_waiting">En attente du destinataire…</string>
+    <string name="transfer_sending">%1$d / %2$d paquets</string>
+    <string name="transfer_verifying">Vérification SHA-256…</string>
+    <string name="transfer_done">Terminé ✓ fichier vérifié</string>
+    <string name="transfer_failed">Échec : %1$s</string>
+    <string name="transfer_cancelled">Annulé</string>
+    <string name="send_failed_no_session">Envoi impossible : pas de session connectée</string>
+    <string name="received_file">Reçu de %1$s : %2$s (Téléchargements/HotRelay)</string>
+    <string name="receive_failed">Réception de %1$s échouée : %2$s</string>
+    <string name="receiving_file">Réception de « %1$s » de %2$s…</string>
 </resources>
