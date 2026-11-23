@@ -10,6 +10,7 @@ public class Participant implements Serializable {
     private int port;
     private boolean isConnected;
     private boolean isHost;
+    private boolean isMe;
     private int avatarColor;
 
     public Participant(String id, String name, String ipAddress, int port, boolean isConnected, boolean isHost) {
@@ -51,6 +52,15 @@ public class Participant implements Serializable {
 
     public void setHost(boolean host) {
         isHost = host;
+    }
+
+    /** true si ce participant est ce téléphone. */
+    public boolean isMe() {
+        return isMe;
+    }
+
+    public void setMe(boolean me) {
+        isMe = me;
     }
 
     public int getAvatarColor() {

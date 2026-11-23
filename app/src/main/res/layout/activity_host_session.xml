@@ -93,21 +93,22 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="192.168.43.1"
+                    android:text="@string/host_ip_unknown"
                     android:textColor="@color/white"
                     android:textSize="32sp"
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/tvHostPort"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
-                    android:text="port UDP 5000"
                     android:textColor="#FF7A2F"
                     android:textSize="13sp"
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/tvHostNotice"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
@@ -139,9 +140,10 @@
                     android:padding="12dp">
 
                     <TextView
+                        android:id="@+id/tvStatDevices"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="2"
+                        android:text="0"
                         android:textColor="@color/text_primary"
                         android:textSize="20sp"
                         android:textStyle="bold" />
@@ -165,9 +167,10 @@
                     android:padding="12dp">
 
                     <TextView
+                        android:id="@+id/tvStatFiles"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="3"
+                        android:text="0"
                         android:textColor="@color/text_primary"
                         android:textSize="20sp"
                         android:textStyle="bold" />
@@ -190,9 +193,10 @@
                     android:padding="12dp">
 
                     <TextView
+                        android:id="@+id/tvStatBytes"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="18,4"
+                        android:text="0"
                         android:textColor="@color/text_primary"
                         android:textSize="20sp"
                         android:textStyle="bold" />
@@ -225,6 +229,16 @@
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false" />
 
+            <TextView
+                android:id="@+id/tvNoClients"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_rounded_card"
+                android:padding="14dp"
+                android:text="@string/no_clients_yet"
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp" />
+
             <!-- Section 2: EN COURS DE RELAIS -->
             <TextView
                 android:layout_width="wrap_content"
@@ -237,63 +251,16 @@
                 android:textSize="11sp"
                 android:textStyle="bold" />
 
-            <androidx.cardview.widget.CardView
+            <!-- Les transferts relayés s'afficheront ici (bloc transfert) -->
+            <TextView
+                android:id="@+id/tvRelayEmpty"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardBackgroundColor="@color/surface"
-                app:cardCornerRadius="14dp"
-                app:cardElevation="0dp"
-                app:strokeColor="@color/card_stroke"
-                app:strokeWidth="1dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="14dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="rapport_tp_reseau.pdf"
-                            android:textColor="@color/text_primary"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="64 %"
-                            android:textColor="@color/primary"
-                            android:textSize="13sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:text="Paul → Aïcha"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="12sp" />
-
-                    <ProgressBar
-                        style="?android:attr/progressBarStyleHorizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="6dp"
-                        android:layout_marginTop="10dp"
-                        android:progress="64"
-                        android:progressDrawable="@drawable/bg_button_orange" />
-
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
+                android:background="@drawable/bg_rounded_card"
+                android:padding="14dp"
+                android:text="@string/no_transfer_in_progress"
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp" />
 
             <Space
                 android:layout_width="match_parent"

@@ -9,11 +9,32 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="4dp"
         android:text="Appareils sur le réseau"
         android:textColor="@color/text_primary"
         android:textSize="24sp"
         android:textStyle="bold" />
+
+    <!-- Rôle et nombre de participants -->
+    <TextView
+        android:id="@+id/tvDevicesSession"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:textColor="@color/text_secondary"
+        android:textSize="13sp" />
+
+    <!-- Affiché quand il n'y a pas de session -->
+    <TextView
+        android:id="@+id/tvDevicesEmpty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_rounded_card"
+        android:gravity="center"
+        android:padding="24dp"
+        android:text="@string/devices_no_session"
+        android:textColor="@color/text_secondary"
+        android:textSize="14sp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvDevices"
@@ -21,5 +42,26 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:clipToPadding="false" />
+
+    <LinearLayout
+        android:id="@+id/btnLeaveSession"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/bg_button_outline_orange"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:padding="14dp"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/leave_session"
+            android:textColor="@color/primary"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+    </LinearLayout>
 
 </LinearLayout>

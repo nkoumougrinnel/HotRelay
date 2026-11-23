@@ -77,45 +77,20 @@
                 android:autofillHints="none"
                 android:background="@drawable/bg_rounded_card"
                 android:digits="0123456789."
-                android:hint="192.168.43.1"
+                android:hint="ex. 10.42.0.1"
                 android:inputType="numberDecimal"
                 android:padding="14dp"
                 android:textColor="@color/text_primary"
                 android:textSize="16sp" />
 
             <TextView
+                android:id="@+id/tvHostIpHint"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="Souvent 192.168.43.1 sur un hotspot Android"
+                android:text="@string/host_ip_not_detected"
                 android:textColor="@color/text_muted"
                 android:textSize="12sp" />
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="16dp" />
-
-            <!-- Field 2: Port -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="6dp"
-                android:text="@string/port_label"
-                android:textColor="@color/text_primary"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-
-            <EditText
-                android:id="@+id/etPort"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:autofillHints="none"
-                android:background="@drawable/bg_rounded_card"
-                android:hint="5000"
-                android:inputType="number"
-                android:padding="14dp"
-                android:textColor="@color/text_primary"
-                android:textSize="16sp" />
 
             <Space
                 android:layout_width="match_parent"
@@ -137,7 +112,7 @@
                 android:layout_height="wrap_content"
                 android:autofillHints="name"
                 android:background="@drawable/bg_rounded_card"
-                android:hint="Paul"
+                android:hint="@string/your_name_label"
                 android:inputType="textPersonName"
                 android:padding="14dp"
                 android:textColor="@color/text_primary"
@@ -187,6 +162,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="32dp" />
 
+            <!-- Statut / erreur de connexion -->
+            <TextView
+                android:id="@+id/tvJoinStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:gravity="center"
+                android:textColor="@color/primary"
+                android:textSize="13sp"
+                android:visibility="gone" />
+
             <!-- Solid Orange Button: Se connecter -->
             <LinearLayout
                 android:id="@+id/btnConnect"
@@ -199,6 +185,7 @@
                 android:padding="16dp">
 
                 <TextView
+                    android:id="@+id/tvConnectLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/connect"

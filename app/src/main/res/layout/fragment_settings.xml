@@ -40,7 +40,8 @@
             android:autofillHints="name"
             android:background="@drawable/bg_badge_gray"
             android:hint="Ex: Mon Téléphone"
-            android:inputType="text"
+            android:imeOptions="actionDone"
+            android:inputType="textPersonName"
             android:padding="12dp"
             android:textColor="@color/text_primary"
             android:textSize="15sp" />

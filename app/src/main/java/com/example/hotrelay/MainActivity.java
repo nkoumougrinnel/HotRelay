@@ -1,6 +1,8 @@
 package com.example.hotrelay;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -9,6 +11,7 @@ import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 
+import com.example.hotrelay.session.SessionManager;
 import com.example.hotrelay.ui.devices.DevicesFragment;
 import com.example.hotrelay.ui.home.HomeFragment;
 import com.example.hotrelay.ui.settings.SettingsFragment;
@@ -17,13 +20,29 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
+    /** Onglet à ouvrir (ID du menu), ex. après avoir rejoint une session. */
+    public static final String EXTRA_TAB = "tab";
+
+    private BottomNavigationView bottomNav;
+
+    /** Prévient l'utilisateur quand la session se termine sans qu'il l'ait demandé. */
+    private final SessionManager.Listener sessionEnded = new SessionManager.Listener() {
+        @Override
+        public void onSessionChanged(SessionManager session) {}
+
+        @Override
+        public void onSessionEnded(String reason) {
+            Toast.makeText(MainActivity.this, getString(R.string.session_ended, reason), Toast.LENGTH_LONG).show();
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         WindowCompat.enableEdgeToEdge(getWindow());
         setContentView(R.layout.activity_main);
 
-        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+        bottomNav = findViewById(R.id.bottom_navigation);
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -59,6 +78,34 @@ public class MainActivity extends AppCompatActivity {
             }
             return false;
         });
+
+        openRequestedTab(getIntent());
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        openRequestedTab(intent);
+    }
+
+    private void openRequestedTab(Intent intent) {
+        int tab = intent == null ? 0 : intent.getIntExtra(EXTRA_TAB, 0);
+        if (tab != 0) {
+            bottomNav.setSelectedItemId(tab);
+            intent.removeExtra(EXTRA_TAB);
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        SessionManager.get(this).addListener(sessionEnded);
+    }
+
+    @Override
+    protected void onStop() {
+        SessionManager.get(this).removeListener(sessionEnded);
+        super.onStop();
     }
 
     private void loadFragment(Fragment fragment) {

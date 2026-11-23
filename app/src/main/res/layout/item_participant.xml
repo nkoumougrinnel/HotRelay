@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
@@ -38,7 +39,7 @@
             android:id="@+id/tvParticipantName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Paul"
+            tools:text="Paul"
             android:textColor="@color/text_primary"
             android:textSize="15sp"
             android:textStyle="bold" />
@@ -48,7 +49,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
-            android:text="192.168.43.112"
+            tools:text="192.168.43.112"
             android:textColor="@color/text_secondary"
             android:textSize="12sp" />
     </LinearLayout>
@@ -58,7 +59,7 @@
         android:id="@+id/tvParticipantStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Connectée"
+        tools:text="Connectée"
         android:textColor="@color/status_green"
         android:textSize="13sp"
         android:textStyle="bold" />
